@@ -5,7 +5,7 @@ const config = {
   token: Env.get('INFLUX_TOKEN', ''),
   orgId: Env.get('INFLUX_ORG', ''),
   bucket: Env.get('INFLUX_BUCKET', ''),
-  healthCheck: true
+  healthCheck: true,
 }
 
 export default config

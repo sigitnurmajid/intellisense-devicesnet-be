@@ -3,9 +3,9 @@ import { InfluxDB, Point } from '@influxdata/influxdb-client'
 import { ReportNode } from '@ioc:Adonis/Lucid/Database'
 
 interface InfluxConfig {
-  url: string,
-  token: string,
-  orgId: string,
+  url: string
+  token: string
+  orgId: string
   bucket: string
 }
 

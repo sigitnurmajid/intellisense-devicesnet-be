@@ -1,5 +1,5 @@
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import { InfluxDriver } from './drivers/InfluxDriver'
+import { MongoClient } from 'mongodb'
 
 /*
 |--------------------------------------------------------------------------
@@ -20,35 +20,31 @@ import { InfluxDriver } from './drivers/InfluxDriver'
 | }
 |
 */
-export default class InfluxProvider {
-  constructor(protected app: ApplicationContract) {}
+export default class MongodbProvider {
+  constructor(protected app: ApplicationContract) { }
 
   public register() {
     // Register your own bindings
-    this.app.container.singleton('Intellisense/Influx', () => {
+    this.app.container.singleton('Intellisense/Mongodb', () => {
       const config = this.app.container.use('Adonis/Core/Config')
-      const influx = new InfluxDriver(config.get('influx'))
-      return influx
+      const mongodb = new MongoClient(config.get('mongodb').url)
+      return mongodb
     })
   }
 
   public async boot() {
-    const HealthCheck = this.app.container.use('Adonis/Core/HealthCheck')
-    const Influx = this.app.container.use('Intellisense/Influx')
-
-    HealthCheck.addChecker('influx', async () => {
-      return {
-        displayName: 'Influx Database Check',
-        health: { healthy: await Influx.report() },
-      }
-    })
+    // All bindings are ready, feel free to use them
   }
 
   public async ready() {
     // App is ready
+    const mongodb = this.app.container.use('Intellisense/Mongodb')
+    await mongodb.connect()
   }
 
   public async shutdown() {
     // Cleanup, since app is going down
+    const mongodb = this.app.container.resolveBinding('Intellisense/Mongodb')
+    await mongodb.disconnect()
   }
 }

@@ -1,5 +1,4 @@
 import type { ApplicationContract } from '@ioc:Adonis/Core/Application'
-import { InfluxDriver } from './drivers/InfluxDriver'
 
 /*
 |--------------------------------------------------------------------------
@@ -20,26 +19,25 @@ import { InfluxDriver } from './drivers/InfluxDriver'
 | }
 |
 */
-export default class InfluxProvider {
+export default class MqttProvider {
   constructor(protected app: ApplicationContract) {}
 
   public register() {
-    // Register your own bindings
-    this.app.container.singleton('Intellisense/Influx', () => {
+    this.app.container.singleton('Intellisense/Mqtt', () => {
       const config = this.app.container.use('Adonis/Core/Config')
-      const influx = new InfluxDriver(config.get('influx'))
-      return influx
+      const MQTT = require('mqtt')
+      return MQTT.connect(config.get('mqtt'))
     })
   }
 
   public async boot() {
     const HealthCheck = this.app.container.use('Adonis/Core/HealthCheck')
-    const Influx = this.app.container.use('Intellisense/Influx')
+    const Mqtt = this.app.container.use('Intellisense/Mqtt')
 
-    HealthCheck.addChecker('influx', async () => {
+    HealthCheck.addChecker('mqtt', async () => {
       return {
-        displayName: 'Influx Database Check',
-        health: { healthy: await Influx.report() },
+        displayName: 'MQTT Client Check',
+        health: { healthy: Mqtt.connected },
       }
     })
   }

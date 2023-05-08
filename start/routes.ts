@@ -30,13 +30,12 @@ Route.group(() => {
     Route.post('login', 'AuthController.login')
     Route.get('logout', 'AuthController.logout').middleware('auth')
     Route.post('register', 'AuthController.register')
+    Route.post('test', 'AuthController.test')
   }).prefix('v1')
 }).prefix('api')
 
 Route.get('health', async ({ response }) => {
   const report = await HealthCheck.getReport()
 
-  return report.healthy
-    ? response.ok(report)
-    : response.badRequest(report)
+  return report.healthy ? response.ok(report) : response.badRequest(report)
 })

@@ -2,7 +2,7 @@ import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import User from 'App/Models/User'
 
 export default class extends BaseSeeder {
-  public async run () {
+  public async run() {
     await User.createMany([
       {
         email: 'sigit@mail.com',
@@ -10,8 +10,8 @@ export default class extends BaseSeeder {
       },
       {
         email: 'admin@mail.com',
-        password: 'secret123'
-      }
+        password: 'secret123',
+      },
     ])
   }
 }

@@ -15,7 +15,6 @@ test.group('POST/login', (group) => {
       .post('api/v1/login')
       .json({ email: user.email, password: 'hiddensecret' })
 
-
     response.assertStatus(200)
     response.assertBodyContains({ status: 'success' })
   })
@@ -27,7 +26,6 @@ test.group('POST/login', (group) => {
       .post('api/v1/login')
       .json({ email: 'test321@mail.com', password: user.password })
 
-
     response.assertStatus(401)
     response.assertBodyContains({ error: 'E_INVALID_AUTH_UID: User not found' })
   })
@@ -38,7 +36,6 @@ test.group('POST/login', (group) => {
     const response = await client
       .post('api/v1/login')
       .json({ email: user.email, password: 'hiddensecret1' })
-
 
     response.assertStatus(401)
     response.assertBodyContains({ error: 'E_INVALID_AUTH_PASSWORD: Password mis-match' })
@@ -92,7 +89,6 @@ test.group('GET/logout', (group) => {
     response.assertStatus(401)
     response.assertTextIncludes(expect)
   })
-
 })
 
 test.group('POST/register', (group) => {
@@ -105,14 +101,14 @@ test.group('POST/register', (group) => {
     const payload = {
       email: 'user@mail.com',
       password: 'secret123',
-      password_confirmation: 'secret123'
+      password_confirmation: 'secret123',
     }
 
     const response = await client.post('api/v1/register').json(payload)
 
     response.assertStatus(200)
     response.assertBodyContains({
-      status: 'success'
+      status: 'success',
     })
   })
 
@@ -122,7 +118,7 @@ test.group('POST/register', (group) => {
     const payload = {
       email: user.email,
       password: user.password,
-      password_confirmation: user.password
+      password_confirmation: user.password,
     }
 
     const response = await client.post('api/v1/register').json(payload)
@@ -133,22 +129,22 @@ test.group('POST/register', (group) => {
     const payload = {
       email: 'admin123@mail.com',
       password: '123',
-      password_confirmation: '123'
+      password_confirmation: '123',
     }
 
     const response = await client.post('api/v1/register').json(payload)
     response.assertStatus(422)
     response.assertBodyContains({
-      "error": [
+      error: [
         {
-          "rule": "minLength",
-          "field": "password",
-          "message": "minLength validation failed",
-          "args": {
-            "minLength": 8
-          }
-        }
-      ]
+          rule: 'minLength',
+          field: 'password',
+          message: 'minLength validation failed',
+          args: {
+            minLength: 8,
+          },
+        },
+      ],
     })
   })
 })

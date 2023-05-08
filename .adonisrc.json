@@ -15,14 +15,17 @@
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel"
+    "./start/kernel",
+    "./start/mqtt"
   ],
   "providers": [
     "./providers/AppProvider",
     "./providers/InfluxProvider",
     "@adonisjs/core",
     "@adonisjs/lucid",
-    "@adonisjs/auth"
+    "@adonisjs/auth",
+    "./providers/MqttProvider",
+    "./providers/MongodbProvider"
   ],
   "aceProviders": [
     "@adonisjs/repl"
