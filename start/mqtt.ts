@@ -1,17 +1,20 @@
 import Mqtt from '@ioc:Intellisense/Mqtt'
 import Logger from '@ioc:Adonis/Core/Logger'
+import { matches } from 'mqtt-pattern'
+import MqttWorker from 'App/Workers/MqttWorker'
 
 const topics = {
-  data: '$share/g1/topic-data',
-  topic: 'topic',
+  data: '$share/intellisense/topic-data',
+  command: 'topic-command',
 }
 
 Mqtt.on('connect', () => {
   Object.values(topics).forEach((value) => {
-    Mqtt.subscribe(value, () => Logger.info(`MQTT client subscribe topic: ${value}`))
+    Mqtt.subscribe(value, () => Logger.info(`MQTT Intellisense Backend subscribe to topic: ${value}`))
   })
 })
 
 Mqtt.on('message', (topic, payload) => {
-  console.log(new Date().toISOString(), topic, payload.toString())
+  const worker = new MqttWorker(topic, payload)
+  worker.work()
 })

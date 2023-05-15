@@ -1,0 +1,23 @@
+{
+  "device" : "Gate001",
+  "points" : [
+    {
+      "measurement" : "test",
+      "tags" : {
+        "name" : "test"
+      },
+      "fields" : {
+        "voltage" : 10
+      }
+    },
+    {
+      "measurement" : "test1",
+      "tags" : {
+        "name" : "test1"
+      },
+      "fields" : {
+        "voltage" : 11
+      }
+    }
+  ]
+}
