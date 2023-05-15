@@ -31,11 +31,16 @@ Route.group(() => {
     Route.get('logout', 'AuthController.logout').middleware('auth')
     Route.post('register', 'AuthController.register')
     Route.post('test', 'AuthController.test')
+    Route.resource('devices', 'DevicesController').middleware({
+      '*': 'auth'
+    }).apiOnly()
+    Route.resource('types', 'TypesController').middleware({
+      '*': 'auth'
+    }).apiOnly()
   }).prefix('v1')
 }).prefix('api')
 
 Route.get('health', async ({ response }) => {
   const report = await HealthCheck.getReport()
-
   return report.healthy ? response.ok(report) : response.badRequest(report)
 })
