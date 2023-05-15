@@ -1,6 +1,5 @@
 import Mqtt from '@ioc:Intellisense/Mqtt'
 import Logger from '@ioc:Adonis/Core/Logger'
-import { matches } from 'mqtt-pattern'
 import MqttWorker from 'App/Workers/MqttWorker'
 
 const topics = {
