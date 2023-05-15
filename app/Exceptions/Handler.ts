@@ -34,8 +34,10 @@ export default class ExceptionHandler extends HttpExceptionHandler {
       return ctx.response.unprocessableEntity(payloadError(error.messages.errors, 'fail'))
     } else if (error.code === 'EAUTH') {
       return ctx.response.internalServerError(payloadError(error.message, 'fail'))
-    } else if (error.code === 'E_UNAUTHORIZED_ACCESS' || 'E_INVALID_AUTH_PASSWORD') {
+    } else if (['E_INVALID_AUTH_UID', 'E_UNAUTHORIZED_ACCESS', 'E_INVALID_AUTH_PASSWORD'].includes(error.code)) {
       return ctx.response.unauthorized(payloadError(error.message, 'fail'))
+    } else if (error.code === 'E_INVALID_AUTH_UID') {
+      return ctx.response.badRequest(payloadError(error.message, 'fail'))
     } else {
       return ctx.response.internalServerError(payloadError(error.message, 'error'))
     }
