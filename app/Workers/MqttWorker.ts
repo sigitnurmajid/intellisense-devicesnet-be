@@ -1,6 +1,6 @@
 import { Point } from '@influxdata/influxdb-client'
 import { schema, validator, rules } from '@ioc:Adonis/Core/Validator'
-import Influx from '@ioc:Intellisense/Influx'
+// import Influx from '@ioc:Intellisense/Influx'
 import Logger from '@ioc:Adonis/Core/Logger'
 
 interface IPoint {
@@ -82,11 +82,11 @@ export default class MqttWorker {
     return points
   }
 
-  private async store(points: Array<Point>) {
-    try {
-      await Influx.writePoints(points)
-    } catch (error) {
-      Logger.error(error.message)
-    }
-  }
+  // private async store(points: Array<Point>) {
+  //   try {
+  //     await Influx.writePoints(points)
+  //   } catch (error) {
+  //     Logger.error(error.message)
+  //   }
+  // }
 }
