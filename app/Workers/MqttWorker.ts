@@ -1,16 +1,18 @@
 import { Point } from '@influxdata/influxdb-client'
 import { schema, validator, rules } from '@ioc:Adonis/Core/Validator'
-// import Influx from '@ioc:Intellisense/Influx'
+import Influx from '@ioc:Intellisense/Influx'
 import Logger from '@ioc:Adonis/Core/Logger'
+import { DateTime } from 'luxon'
 
 interface IPoint {
   measurement: string,
   tags: Object,
-  fields: Object
+  fields: Object,
+  time: DateTime | undefined
 }
 
 interface ISchema {
-  device: string
+  serialNumber: string
   points: Array<IPoint>
 }
 
@@ -24,23 +26,23 @@ export default class MqttWorker {
     // Build json into Point Influx
     if(data === undefined) return
     const points = this.build(data)
-
-    console.log(points)
     
+    // console.log(points)
     // Store Point Influx to InfluxDB
-    // this.store(points)
+    this.store(points)
   }
 
   private async validate(payload: string) {
     const jsonSchema = schema.create({
-      device: schema.string({}, [
-        rules.exists({ table: 'devices', column: 'name' })
+      serialNumber: schema.string({}, [
+        rules.exists({ table: 'devices', column: 'serial_number' })
       ]),
       points: schema.array().members(
         schema.object().members({
           measurement: schema.string(),
           tags: schema.object().anyMembers(),
-          fields: schema.object().anyMembers()
+          fields: schema.object().anyMembers(),
+          time: schema.date.optional({})
         }
         )
       )
@@ -60,7 +62,7 @@ export default class MqttWorker {
     const points = data.points.map(x => {
       const point = new Point(x.measurement)
 
-      point.tag('device_name', data.device)
+      point.tag('serial_number', data.serialNumber)
       Object.entries(x.tags).forEach(([key, value]) => {
         point.tag(key, value)
       })
@@ -76,17 +78,19 @@ export default class MqttWorker {
         }
       })
 
+      if(x.time !== undefined) point.timestamp(x.time.toJSDate())
+
       return point
     })
 
     return points
   }
 
-  // private async store(points: Array<Point>) {
-  //   try {
-  //     await Influx.writePoints(points)
-  //   } catch (error) {
-  //     Logger.error(error.message)
-  //   }
-  // }
+  private async store(points: Array<Point>) {
+    try {
+      await Influx.writePoints(points)
+    } catch (error) {
+      Logger.error(error.message)
+    }
+  }
 }

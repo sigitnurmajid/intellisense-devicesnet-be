@@ -27,8 +27,8 @@ export default class CreateDeviceValidator {
     type_id: schema.number([
       rules.exists({ table: 'types', column: 'id' })
     ]),
-    name: schema.string({ trim: true }, [
-      rules.unique({ table: 'devices', column: 'name' })
+    serial_number: schema.string({ trim: true }, [
+      rules.unique({ table: 'devices', column: 'serial_number' })
     ]),
     fields: schema.object().anyMembers()
   })

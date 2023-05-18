@@ -20,7 +20,7 @@ export default class DevicesController {
     }
 
     const device = await type.related('devices').create({
-      name: payload.name,
+      serialNumber: payload.serial_number,
       fields: payload.fields
     })
     return response.ok({ status: 'success', data: { device } })
@@ -43,7 +43,7 @@ export default class DevicesController {
     }
 
     await device.merge({
-      name: payload.name != undefined ? payload.name : type.name,
+      serialNumber: payload.serial_number != undefined ? payload.serial_number : device.serialNumber,
       fields: payload.fields != undefined ? payload.fields : device.fields
     }).save()
 

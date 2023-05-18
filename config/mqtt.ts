@@ -7,8 +7,7 @@ const config = {
   clientId: 'intellisense-device-net-' + Math.random().toString(16).substring(3),
   port: Env.get('MQTT_PORT', '1883'),
   rejectUnauthorized: false,
-  healthCheck: true,
-  protocolVersion: 5,
+  healthCheck: true
 }
 
 export default config

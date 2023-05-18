@@ -24,7 +24,7 @@ export default class UpdateDeviceValidator {
    *    ```
    */
   public schema = schema.create({
-    name: schema.string({ trim: true }),
+    serial_number: schema.string({ trim: true }),
     fields: schema.object().anyMembers()
   })
 

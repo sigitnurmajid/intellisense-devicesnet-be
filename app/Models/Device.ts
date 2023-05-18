@@ -7,7 +7,7 @@ export default class Device extends BaseModel {
   public id: number
 
   @column()
-  public name: string
+  public serialNumber: string
 
   @column()
   public fields: any
