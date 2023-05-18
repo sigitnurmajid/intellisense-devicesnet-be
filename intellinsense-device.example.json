@@ -1,5 +1,5 @@
 {
-  "device" : "Gate001",
+  "serialNumber" : "G-001",
   "points" : [
     {
       "measurement" : "test",
@@ -8,7 +8,8 @@
       },
       "fields" : {
         "voltage" : 10
-      }
+      },
+      "time" : "2023-05-17T06:07:21.309Z"
     },
     {
       "measurement" : "test1",
