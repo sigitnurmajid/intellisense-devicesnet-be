@@ -3,7 +3,7 @@ import Logger from '@ioc:Adonis/Core/Logger'
 import MqttWorker from 'App/Workers/MqttWorker'
 
 const topics = {
-  data: '$share/intellisense/topic-data',
+  data: 'topic-data',
   command: 'topic-command',
 }
 
